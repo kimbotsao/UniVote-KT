@@ -10,4 +10,4 @@ To test, clone the git repository and ensure that Truffle Suite is installed. No
 First compile the contract using ```truffle compile```then run tests with ```truffle test```
 
 Here are the results for our testing:
-![Test Results](/assets/images/TestResults.png)
+![Test Results](TestResults.png)

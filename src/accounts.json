@@ -1,0 +1,26 @@
+[
+    {
+        "address": "abcde",
+        "pkey": "abcde",
+        "role": "commission",
+        "idx": 0
+    },
+    {
+        "address": "abcde",
+        "pkey": "abcde",
+        "role": "voter",
+        "idx": 1
+    },
+    {
+        "address": "abcde",
+        "pkey": "abcde",
+        "role": "voter",
+        "idx": 2
+    },
+    {
+        "address": "abcde",
+        "pkey": "abcde",
+        "role": "voter",
+        "idx": 3
+    }
+]

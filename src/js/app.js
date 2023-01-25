@@ -1,64 +1,100 @@
 App = {
-  web3Provider: null,
-  contracts: {},
-
-  init: async function() {
-    // Load pets.
-    $.getJSON('../pets.json', function(data) {
-      var petsRow = $('#petsRow');
-      var petTemplate = $('#petTemplate');
-
-      for (i = 0; i < data.length; i ++) {
-        petTemplate.find('.panel-title').text(data[i].name);
-        petTemplate.find('img').attr('src', data[i].picture);
-        petTemplate.find('.pet-breed').text(data[i].breed);
-        petTemplate.find('.pet-age').text(data[i].age);
-        petTemplate.find('.pet-location').text(data[i].location);
-        petTemplate.find('.btn-adopt').attr('data-id', data[i].id);
-
-        petsRow.append(petTemplate.html());
+    web3Provider: null,
+    contracts: {},
+    committee: '0x0',
+    voters: [],
+  
+    init: async function() {
+      // Load users.
+      // Preload voter and commission accounts 
+      $.getJSON('../accounts.json', function(data) {
+        for (i = 0; i < data.length; i ++) {
+          if (data[i].role == "commission") {
+            App.committee = data[i].address;
+          }
+          else if (data[i].role == "voter") {
+            App.voters[data[i].idx] = data[i].address;
+          }
+        }
+      });
+  
+      return await App.initWeb3();
+    },
+  
+    initWeb3: async function() {
+    // Modern dapp browsers...
+      if (window.ethereum) {
+        App.web3Provider = window.ethereum;
+        try {
+          // Request account access
+          await window.ethereum.enable();
+        } catch (error) {
+          // User denied account access...
+          console.error("User denied account access")
+        }   
       }
-    });
+      // Legacy dapp browsers...
+      else if (window.web3) {
+        App.web3Provider = window.web3.currentProvider;
+      }
+      // If no injected web3 instance is detected, fall back to Ganache
+      else {
+        App.web3Provider = new Web3.providers.HttpProvider('http://localhost:7545');
+      }
+      web3 = new Web3(App.web3Provider);
+  
+      return App.initContract();
+    },
+  
+    initContract: function() {
+      $.getJSON('Election.json', function(data) {
+      // Get the necessary contract artifact file and instantiate it with @truffle/contract
+        var ElectionArtifact = data;
+        App.contracts.Election = TruffleContract(ElectionArtifact);
+    
+        // Set the provider for our contract
+        App.contracts.Election.setProvider(App.web3Provider);
+    
+        // Preliminary Action?
+        // Person should have logged in by now with Metamask
 
-    return await App.initWeb3();
-  },
+      }).done(function() {
+        return App.render();
+      });
+      // return App.render();
+    },
 
-  initWeb3: async function() {
-    /*
-     * Replace me...
-     */
+    /* FUNCTIONS FOR RENDERING UI */
+    render: function() {
+        var electionInstance;
 
-    return App.initContract();
-  },
+        // Load account data (for now wallet addr)
+        web3.eth.getAccounts(function(error, accounts) {
+            if (error) {
+              console.log(error);
+            }
+      
+            var account = accounts[0];
+            $("#wallet-addr").html(account);
+        });
 
-  initContract: function() {
-    /*
-     * Replace me...
-     */
+        // Load contract data (for now end time)
+        App.contracts.Election.deployed().then(function(instance) {
+            electionInstance = instance;
+            console.log("executed to here");
+            // this call is returning Internal JSON RPC error
+            return electionInstance.getEndTime.call();
+        }).then(function(et) {
+            // Set end time in html
+            $("#endtime").html(et);
+        }).catch(function(err) {
+            console.log(err.message);
+        });
 
-    return App.bindEvents();
-  },
-
-  bindEvents: function() {
-    $(document).on('click', '.btn-adopt', App.handleAdopt);
-  },
-
-  markAdopted: function() {
-    /*
-     * Replace me...
-     */
-  },
-
-  handleAdopt: function(event) {
-    event.preventDefault();
-
-    var petId = parseInt($(event.target).data('id'));
-
-    /*
-     * Replace me...
-     */
-  }
-
+        // Load candidates into voting UI
+        // var candidates = []
+        
+    }
 };
 
 $(function() {

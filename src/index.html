@@ -5,7 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
-    <title>Pete's Pet Shop</title>
+    <title>UniVote</title>
 
     <!-- Bootstrap -->
     <link href="css/bootstrap.min.css" rel="stylesheet">
@@ -21,30 +21,70 @@
     <div class="container">
       <div class="row">
         <div class="col-xs-12 col-sm-8 col-sm-push-2">
-          <h1 class="text-center">Pete's Pet Shop</h1>
+          <h1 class="text-center">Columbia Presidential Election</h1>
           <hr/>
           <br/>
         </div>
       </div>
 
-      <div id="petsRow" class="row">
-        <!-- PETS LOAD HERE -->
-      </div>
-    </div>
-
-    <div id="petTemplate" style="display: none;">
-      <div class="col-sm-6 col-md-4 col-lg-3">
-        <div class="panel panel-default panel-pet">
-          <div class="panel-heading">
-            <h3 class="panel-title">Scrappy</h3>
+      <div class="row">
+        <div id="electionUI" class="col-md-6">
+          <strong>Status</strong>: <span id="status">Not registered</span><br/><br/>
+          <div id="votingUI">
+            <h2> Submit Your Vote</h2>
+            <p> You may vote once on your preferred candidate for this election. Please note that if your 
+              registration has not been approved by the election committee, you will not be able submit your vote.</p>
+            <p> Remember to reveal your vote at the end of the election period. </p>
+            <form>
+              <div class="form-check">
+                <input type="radio" class="form-check-input" name="voteRadios" id="candidate1" value="option1">
+                <label class="form-check-label" for="candidate1">Roaree Lion</label>
+              </div>
+              <div class="form-check">
+                <input type="radio" class="form-check-input" name="voteRadios" id="candidate2" value="option2">
+                <label class="form-check-label" for="candidate2">Shih-Fu Chang</label>
+              </div>
+              <div class="form-check">
+                <input type="radio" class="form-check-input" name="voteRadios" id="candidate3" value="option3">
+                <label class="form-check-label" for="candidate3">Junfeng Yang</label>
+              </div>
+              <div class="form-check">
+                <input type="radio" class="form-check-input" name="voteRadios" id="candidate4" value="option3">
+                <label class="form-check-label" for="candidate4">Chef Mike</label>
+              </div>
+              <div class="form-check">
+                <input type="radio" class="form-check-input" name="voteRadios" id="candidate5" value="option3">
+                <label class="form-check-label" for="candidate5">John Jay</label>
+              </div><br/>
+              <label for="voteSalt">Salt</label>
+              <input type="text" id="voteSalt" class="form-control" aria-describedby="voteSaltHelp">
+              <small id="voteSaltHelp" class="form-text text-muted">
+                This salt will be hashed with your vote choice for privacy before being 
+                submitted to the blockchain. Please remember it for the reveal period.
+              </small><br/><br/>
+              <button type="submit" class="btn btn-primary">Submit</button>
+            </form>
           </div>
-          <div class="panel-body">
-            <img alt="140x140" data-src="holder.js/140x140" class="img-rounded img-center" style="width: 100%;" src="https://animalso.com/wp-content/uploads/2017/01/Golden-Retriever_6.jpg" data-holder-rendered="true">
-            <br/><br/>
-            <strong>Breed</strong>: <span class="pet-breed">Golden Retriever</span><br/>
-            <strong>Age</strong>: <span class="pet-age">3</span><br/>
-            <strong>Location</strong>: <span class="pet-location">Warren, MI</span><br/><br/>
-            <button class="btn btn-default btn-adopt" type="button" data-id="0">Adopt</button>
+
+          <div id="revealUI"> <!--style="display: none;"-->
+            <h2> Reveal Your Vote</h2>
+            <p> Submit your salt for this election. </p>
+            <form>
+              <label for="inputSalt">Salt</label>
+              <input type="text" id="inputSalt" class="form-control" aria-describedby="saltHelp">
+              <small id="saltHelp" class="form-text text-muted">
+                Please enter the salt you entered earlier in the election. This time the salt will be submitted to the 
+                blockchain to reveal and validate your vote.
+              </small><br/><br/>
+              <button type="submit" class="btn btn-primary">Submit</button>
+            </form>
+          </div>
+        </div>
+
+        <div id="info" class="col-md-6">
+          <div class="text-right">
+            <strong>Wallet Address</strong>: <span id="wallet-addr">0x000</span><br/>
+            <strong>Election Endtime</strong>: <span id="endtime">12637412346</span><br/>
           </div>
         </div>
       </div>

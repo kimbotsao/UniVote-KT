@@ -29,7 +29,9 @@
 
       <div class="row">
         <div id="electionUI" class="col-md-6">
-          <strong>Status</strong>: <span id="status">Not registered</span><br/><br/>
+          <strong>Status</strong>: <span id="vstatus">Not registered</span>
+          <button type="submit" class="btn btn-primary">Register</button>
+          <br/><br/>
           <div id="votingUI">
             <h2> Submit Your Vote</h2>
             <p> You may vote once on your preferred candidate for this election. Please note that if your 
@@ -70,6 +72,12 @@
             <h2> Reveal Your Vote</h2>
             <p> Submit your salt for this election. </p>
             <form>
+              <label for="voteRev">Candidate Name</label>
+              <input type="text" id="voteRev" class="form-control" aria-describedby="voteHelp">
+              <small id="voteHelp" class="form-text text-muted">
+                For the sake of avoiding client-side caching, please type the name of candidate choice.
+                In real-life implementations, this choice would've been saved from the earlier election period.
+              </small><br/><br/>
               <label for="inputSalt">Salt</label>
               <input type="text" id="inputSalt" class="form-control" aria-describedby="saltHelp">
               <small id="saltHelp" class="form-text text-muted">
@@ -79,6 +87,32 @@
               <button type="submit" class="btn btn-primary">Submit</button>
             </form>
           </div>
+        </div>
+
+        <div id="regUI" class="col-md-6">
+          <h2>Pending Registrations (<span id="reg-count">X</span>)</h2>
+          <table class="table">
+            <thead>
+              <tr>
+                <th scope="col">Voter Address</th>
+                <!-- <th scope="col">First</th> -->
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td scope="row">0x111</td>
+                <td><button type="submit" class="btn btn-primary btn-sm">Approve</button></td>
+              </tr>
+              <tr>
+                <td scope="row">0x222</td>
+                <td><button type="submit" class="btn btn-primary btn-sm">Approve</button></td>
+              </tr>
+              <tr>
+                <td scope="row">0x333</td>
+                <td><button type="submit" class="btn btn-primary btn-sm">Approve</button></td>
+              </tr>
+            </tbody>
+          </table>
         </div>
 
         <div id="info" class="col-md-6">

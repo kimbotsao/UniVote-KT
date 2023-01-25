@@ -10,10 +10,10 @@ App = {
       $.getJSON('../accounts.json', function(data) {
         for (i = 0; i < data.length; i ++) {
           if (data[i].role == "commission") {
-            App.committee = data[i].address;
+            App.committee = data[i].address.toLowerCase();
           }
           else if (data[i].role == "voter") {
-            App.voters[data[i].idx] = data[i].address;
+            App.voters[data[i].idx] = data[i].address.toLowerCase();
           }
         }
       });
@@ -76,6 +76,19 @@ App = {
       
             var account = accounts[0];
             $("#wallet-addr").html(account);
+
+            var vView = $("#electionUI");
+            var cView = $("#regUI");
+
+            // Show components based on account
+            if (account == App.committee) {
+              cView.show();
+              vView.hide();
+            }
+            else if (App.voters.includes(account)) {
+              vView.show();
+              cView.hide();
+            }
         });
 
         // Load contract data (for now end time)
@@ -89,9 +102,6 @@ App = {
         }).catch(function(err) {
             console.log(err.message);
         });
-
-        // Load candidates into voting UI
-        // var candidates = []
         
     }
 };

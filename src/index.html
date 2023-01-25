@@ -30,7 +30,7 @@
       <div class="row">
         <div id="electionUI" class="col-md-6">
           <strong>Status</strong>: <span id="vstatus">Null</span>
-          <button type="submit" class="btn btn-primary">Register</button>
+          <button type="submit" class="btn btn-primary" id="btn-reg">Register</button>
           <br/><br/>
           <div id="votingUI">
             <h2> Submit Your Vote</h2>
@@ -64,7 +64,7 @@
                 This salt will be hashed with your vote choice for privacy before being 
                 submitted to the blockchain. Please remember it for the reveal period.
               </small><br/><br/>
-              <button type="submit" class="btn btn-primary">Submit</button>
+              <button type="submit" class="btn btn-primary" id="btn-submit-vote">Submit</button>
             </form>
           </div>
 
@@ -84,7 +84,7 @@
                 Please enter the salt you entered earlier in the election. This time the salt will be submitted to the 
                 blockchain to reveal and validate your vote.
               </small><br/><br/>
-              <button type="submit" class="btn btn-primary">Submit</button>
+              <button type="submit" class="btn btn-primary" id="btn-submit-rev">Submit</button>
             </form>
           </div>
         </div>
@@ -95,11 +95,10 @@
             <thead>
               <tr>
                 <th scope="col">Voter Address</th>
-                <!-- <th scope="col">First</th> -->
               </tr>
             </thead>
-            <tbody>
-              <tr>
+            <tbody id="pendings">
+              <!-- <tr>
                 <td scope="row">0x111</td>
                 <td><button type="submit" class="btn btn-primary btn-sm">Approve</button></td>
               </tr>
@@ -110,7 +109,7 @@
               <tr>
                 <td scope="row">0x333</td>
                 <td><button type="submit" class="btn btn-primary btn-sm">Approve</button></td>
-              </tr>
+              </tr> -->
             </tbody>
           </table>
         </div>

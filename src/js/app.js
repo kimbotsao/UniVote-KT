@@ -70,6 +70,7 @@ App = {
             }
       
             var account = accounts[0];
+            web3.eth.defaultAccount = account;
             $("#wallet-addr").html(account);
 
             var vView = $("#electionUI");
@@ -79,42 +80,16 @@ App = {
             if (account == App.committee) {
               cView.show();
               vView.hide();
+
+              // Get Pending
+              App.loadPending();
             }
-            else if (App.voters.includes(account)) {
-              var statPend;
-              var statReg;
-              var statHTML; 
-              
+            else if (App.voters.includes(account)) {          
               vView.show();
               cView.hide();
 
               // Set Status
-              App.contracts.Election.deployed().then(function(instance) {
-                electionInstance = instance;
-                return electionInstance.alreadyRegistered.call(account);
-                // statPend = electionInstance.alreadyRegistered.call(account);
-              }).then(function(retPend) {
-                statPend = retPend;
-                // statReg = electionInstance.getStatus.call();
-              }).then(function() {
-                return electionInstance.getStatus.call();
-              }).then(function(retReg) {
-                statReg = retReg;
-              }).then(function() {
-                if (statPend == false) {
-                  return "Not Registered";
-                }
-                else if (statPend == true) {
-                  if (statReg == true) {
-                    return "Registration Approved";
-                  }
-                  return "Pending Approval";
-                }
-              }).then(function(stat) {
-                  $("#vstatus").html(stat);
-              }).catch(function(err) {
-                  console.log(err.message);
-              });
+              App.updateStatus();
             }
         });
 
@@ -129,6 +104,79 @@ App = {
             console.log(err.message);
         });
         
+        // Button handling
+        $("#btn-reg").click(async function() {
+          App.contracts.Election.deployed().then(function(instance) {
+            electionInstance = instance;
+            // electionInstance.registerVoter({from: $("#wallet-addr").val()});
+            electionInstance.registerVoter({from:web3.eth.defaultAccount});
+            // return electionInstance.getEndTime.call();
+          }).then(function() {
+              console.log("register called");
+              App.updateStatus();
+          }).catch(function(err) {
+              console.log(err.message);
+          });
+        });
+    },
+
+    updateStatus: function() {
+      var electionInstance;
+      var statPend;
+      var statReg;
+
+      App.contracts.Election.deployed().then(function(instance) {
+        electionInstance = instance;
+        console.log("before already reg");
+        // return electionInstance.alreadyRegistered.call($("#wallet-addr").val());
+        return electionInstance.alreadyRegistered.call(web3.eth.defaultAccount);
+        // statPend = electionInstance.alreadyRegistered.call(account);
+      }).then(function(retPend) {
+        console.log("before statPend");
+        console.log(retPend);
+        statPend = retPend;
+        // statReg = electionInstance.getStatus.call();
+      }).then(function() {
+        console.log("before getStatus");
+        return electionInstance.getStatus.call();
+      }).then(function(retReg) {
+        console.log(retReg);
+        statReg = retReg;
+      }).then(function() {
+        if (statPend == false) {
+          return "Not Registered";
+        }
+        else if (statPend == true) {
+          if (statReg == true) {
+            return "Registration Approved";
+          }
+          return "Pending Approval";
+        }
+      }).then(function(stat) {
+          $("#vstatus").html(stat);
+      }).catch(function(err) {
+          console.log(err.message);
+      });
+    },
+
+    loadPending: function() {
+      App.contracts.Election.deployed().then(function(instance) {
+        electionInstance = instance;
+
+        return electionInstance.getPending.call();
+      }).then(function(pendings) {
+          var table_html = '';
+          for (i=0; i<pendings.length; i++) {
+            //create html table row
+            table_html += '<tr>';         
+            table_html += '<td scope="row" class="' + 'v' + String(i) + '">' + pendings[i] + '</td>';
+            table_html += '<td><button type="button" class="btn btn-primary btn-sm ' + 'v' + String(i) + '">' + 'Approve</button></td>';
+            table_html += '</tr>';
+          }
+          $( "#pendings" ).append(  table_html );
+      }).catch(function(err) {
+          console.log(err.message);
+      });
     }
 };
 

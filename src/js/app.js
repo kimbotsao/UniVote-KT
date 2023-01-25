@@ -81,12 +81,11 @@ App = {
         // Load contract data (for now end time)
         App.contracts.Election.deployed().then(function(instance) {
             electionInstance = instance;
-            console.log("executed to here");
             // this call is returning Internal JSON RPC error
             return electionInstance.getEndTime.call();
         }).then(function(et) {
             // Set end time in html
-            $("#endtime").html(et);
+            $("#endtime").html(et.toNumber());
         }).catch(function(err) {
             console.log(err.message);
         });

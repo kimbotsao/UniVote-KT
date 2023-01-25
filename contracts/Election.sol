@@ -35,7 +35,9 @@ contract Election {
     // event Voted(uint256 vote);
 
     constructor(string memory _electionName, uint256 _endTime, uint256 _revealDuration) {
-        committee = msg.sender;
+        // committee = msg.sender;
+        // hard code address for debugging
+        committee = 0x07Dce7e6B141cEDf8816dF0C22Adf4b7A83f8b8A;
         beginTime = block.timestamp;
         endTime = _endTime;
         revealTime = endTime + _revealDuration;

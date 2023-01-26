@@ -118,6 +118,21 @@ App = {
               console.log(err.message);
           });
         });
+
+        $(document).on("click", ".btn-app", function(){
+          console.log("approve clicked 2");
+          // Get corresponding address
+          var atts = $(event.target).attr("class").slice(-2);
+          var reg_addr = $('[name="voter-addr"][class="'+atts+'"]').html();
+          // Call approveRegistration
+
+          App.contracts.Election.deployed().then(function(instance) {
+            electionInstance = instance;
+            electionInstance.approveRegistration(reg_addr);
+          }).catch(function(err) {
+            console.log(err.message);
+          });
+        });
     },
 
     updateStatus: function() {
@@ -169,10 +184,11 @@ App = {
           for (i=0; i<pendings.length; i++) {
             //create html table row
             table_html += '<tr>';         
-            table_html += '<td scope="row" class="' + 'v' + String(i) + '">' + pendings[i] + '</td>';
-            table_html += '<td><button type="button" class="btn btn-primary btn-sm ' + 'v' + String(i) + '">' + 'Approve</button></td>';
+            table_html += '<td name="voter-addr" class="' + 'v' + String(i) + '">' + pendings[i] + '</td>';
+            table_html += '<td><button type="button" class="btn btn-primary btn-sm btn-app ' + 'v' + String(i) + '">' + 'Approve</button></td>';
             table_html += '</tr>';
           }
+          console.log(table_html);
           $( "#pendings" ).append(  table_html );
       }).catch(function(err) {
           console.log(err.message);

@@ -15,16 +15,24 @@ UniVote is a secure, on-chain voting dApp that works to make voting on small and
 ## Testing
 To test, clone the git repository and ensure that Truffle Suite is installed. Note that for tests to execute properly, the ```endTime``` parameter in ```2_deploy_contracts.js``` and ```election_test.js``` must be reconfigured according to current UTC time. Also adjust the millisecond parameter to the ```sleep(ms)``` function in the test file if needed according to execution time on your device.
 
+Running the tests near the end of the election period will ensure that the revealVote and calcWinner tests are executed at the right time. The sleep function ensures that the calcWinner test is run after the reveal period has ended.
+
 First compile the contract using ```truffle compile```then run tests with ```truffle test```
 
 Here are the results for our testing:
-![Test Results](TestResults.png)
+
+<img src="TestResults.png" width=70% height=70%>
 
 ## Usage
-UniVote is deployed on the TBA. The contract address is TBA. Since we are not able to pay for hosting, you can interact with the contract via a browser locally with the following instructions.
+UniVote is deployed on the Goerli Testnet. Since we are not able to pay for hosting, you can interact with the contract via a browser locally with the following instructions.
 1. Ensure you have cloned the repository, installed Truffle Suite, and Ganache to provide test wallets and ETH.
 2. Set the ```endTime``` and ```revealDuration``` parameter in ```2_deploy_contracts.js```.
 3. Install the Metamask extension and add the Ganache Ethereum client as a new network. Import as many wallet addresses as you would like to use. Please note that Account 1 will be the address of the committee as Truffle will deploy from that address. [Helpful instructions](https://trufflesuite.com/docs/truffle/how-to/truffle-with-metamask/)
+
+Network Configuration:
+
+<img src="NetConfig.png" width=50% height=50%>
+
 4. Add wallet addresses to accounts.json. Make sure the committee address has the idx 0.
 5. Run the following commands to compile, deploy, and start your local web server. 
 ```

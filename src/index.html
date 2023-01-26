@@ -71,7 +71,7 @@
           <div id="revealUI"> <!--style="display: none;"-->
             <h2> Reveal Your Vote</h2>
             <p> Submit your salt for this election. </p>
-            <form>
+            <form id="rev-form">
               <label for="voteRev">Candidate Name</label>
               <input type="text" id="voteRev" class="form-control" aria-describedby="voteHelp">
               <small id="voteHelp" class="form-text text-muted">
@@ -84,7 +84,7 @@
                 Please enter the salt you entered earlier in the election. This time the salt will be submitted to the 
                 blockchain to reveal and validate your vote.
               </small><br/><br/>
-              <button type="submit" class="btn btn-primary" id="btn-submit-rev">Submit</button>
+              <button type="button" class="btn btn-primary" id="btn-submit-rev">Submit</button>
             </form>
           </div>
         </div>
@@ -98,18 +98,6 @@
               </tr>
             </thead>
             <tbody id="pendings">
-              <!-- <tr>
-                <td scope="row">0x111</td>
-                <td><button type="submit" class="btn btn-primary btn-sm">Approve</button></td>
-              </tr>
-              <tr>
-                <td scope="row">0x222</td>
-                <td><button type="submit" class="btn btn-primary btn-sm">Approve</button></td>
-              </tr>
-              <tr>
-                <td scope="row">0x333</td>
-                <td><button type="submit" class="btn btn-primary btn-sm">Approve</button></td>
-              </tr> -->
             </tbody>
           </table>
         </div>
@@ -118,6 +106,12 @@
           <div class="text-right">
             <strong>Wallet Address</strong>: <span id="wallet-addr">0x000</span><br/>
             <strong>Election Endtime</strong>: <span id="endtime">12637412346</span><br/>
+          </div>
+          <div id="resultUI">
+            <h2>Election Results</h2>
+            <p>Election results may be revealed after the entire election process 
+              including the vote reveal period is over.</p><br/>
+            <button type="button" class="btn btn-primary" id="btn-results">Election Result</button>
           </div>
         </div>
       </div>

@@ -183,18 +183,45 @@ App = {
                     web3.utils.asciiToHex(vote), web3.utils.asciiToHex(salt)
                 ]));
               console.log(secretHash);
-              // App.contracts.Election.deployed().then(function(instance) {
-              //   electionInstance = instance;
-              //   electionInstance.vote(secretHash, {from:web3.eth.defaultAccount});
-              // }).catch(function(err) {
-              //   console.log(err.message);
-              // });
+
+              App.contracts.Election.deployed().then(function(instance) {
+                electionInstance = instance;
+                electionInstance.vote(secretHash, {from:web3.eth.defaultAccount});
+              }).catch(function(err) {
+                console.log(err.message);
+              });
               
               // CLEAR FORM
               document.getElementById('vote-form').reset();
-
             }
           }  
+        });
+
+        $("#btn-submit-rev").click(async function() {
+          await App.getElectionDuration();
+          await App.getRevealDuration();
+          if (App.endLeft != 0){
+            alert("The voting period has not ended.");
+          }
+          else if (App.revLeft == 0) {
+            alert("The reveal period has ended.")
+          }
+          else {
+            document.getElementById('rev-form').reset();
+          }
+
+
+          App.contracts.Election.deployed().then(function(instance) {
+            electionInstance = instance;
+            // electionInstance.registerVoter({from: $("#wallet-addr").val()});
+            electionInstance.registerVoter({from:web3.eth.defaultAccount});
+            // return electionInstance.getEndTime.call();
+          }).then(function() {
+              console.log("register called");
+              App.updateStatus();
+          }).catch(function(err) {
+              console.log(err.message);
+          });
         });
 
         $(document).on("click", ".btn-app", function(){
@@ -203,14 +230,16 @@ App = {
           var reg_addr = $('[name="voter-addr"][class="'+atts+'"]').html();
           // Call approveRegistration
           console.log("registered addr" + reg_addr);
+
           App.contracts.Election.deployed().then(function(instance) {
             electionInstance = instance;
             electionInstance.approveRegistration(reg_addr, {from:web3.eth.defaultAccount});
+          }).then(function() {
+            // MAKE ADDRESS GREEN TO SHOW APPROVAL
+            $('[name="voter-addr"][class="'+atts+'"]').css('color', 'green');
           }).catch(function(err) {
             console.log(err.message);
           });
-
-          // GREY OUT BUTTON OR SHOW APPROVAL
         });
     },
 
@@ -272,6 +301,10 @@ App = {
         return electionInstance.getPending.call();
       }).then(function(pendings) {
           var table_html = '';
+          var cnt = pendings.length;
+          console.log("count p " + cnt);
+          $('#reg-count').html(cnt);
+
           for (i=0; i<pendings.length; i++) {
             //create html table row
             table_html += '<tr>';         

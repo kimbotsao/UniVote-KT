@@ -41,6 +41,8 @@ truffle migrate --reset
 npm run dev
 ```
 
+Note: Refresh the page to see changes after changing addresses or calling the contract.
+
 ## Security Design
 1. In order to maintain real-world feasibility, UniVote expects to work with an accredited election commission to approve voter registrations whether it be by submitting proof-of-identy documents or any other method. We ensure that actions that should only be executed by the commission are properly enforced using ```require``` statements. The exact implmentation of voter verification is left up to discussion and could possibly use a completely decentralized method if employing exclusive NFTs, secret nonces, etc. 
 2. ```require``` statements are also used to ensure that only eligible voters may vote in an election. 

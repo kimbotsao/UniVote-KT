@@ -3,6 +3,10 @@ App = {
     contracts: {},
     committee: '0x0',
     voters: [],
+    endtime: null,
+    revealtime: null,
+    endLeft: null,
+    revLeft: null,
   
     init: async function() {
       // Preload voter and commission accounts 
@@ -104,7 +108,30 @@ App = {
 
             return electionInstance.getEndTime.call();
         }).then(function(et) {
-            $("#endtime").html(et.toNumber());
+            App.endtime = et.toNumber();
+            $("#endtime").html(App.endtime);
+        }).catch(function(err) {
+            console.log(err.message);
+        });
+
+        App.contracts.Election.deployed().then(function(instance) {
+          electionInstance = instance;
+
+          return electionInstance.getRevealTime.call();
+        }).then(function(rt) {
+            App.revealtime = rt.toNumber();
+            console.log("rev time" + App.revealtime);
+        }).catch(function(err) {
+            console.log(err.message);
+        });
+
+        // Test committee address not hard coded
+        App.contracts.Election.deployed().then(function(instance) {
+          electionInstance = instance;
+
+          return electionInstance.getCommitteeAddr.call();
+        }).then(function(ad) {
+            console.log("committee addr " + ad);
         }).catch(function(err) {
             console.log(err.message);
         });
@@ -126,35 +153,48 @@ App = {
 
         $("#btn-submit-vote").click(async function() {
           // TIME CONTROL : before election EndTime
-          // STATUS CONTROL : must be Registration Approved
-          // get selected radio
-          var vote;
-          var ele = document.getElementsByName('voteRadios'); 
-          for(i = 0; i < ele.length; i++) {
-              if(ele[i].checked) {
-                vote = ele[i].value;
-              }
+          await App.getElectionDuration();
+          if (App.endLeft == 0){
+            alert("The voting period has ended.");
           }
-          console.log(vote);
-          // get salt input value
-          var salt = document.getElementById('voteSalt').value;
-          console.log(salt);
-          console.log(web3.version);
-          // hash vote and salt
-          const secretHash = web3.utils.soliditySha3(
-            web3.eth.abi.encodeParameters(['bytes32', 'bytes32'], [
-                web3.utils.asciiToHex(vote), web3.utils.asciiToHex(salt)
-            ]));
-          console.log(secretHash);
-          // App.contracts.Election.deployed().then(function(instance) {
-          //   electionInstance = instance;
-          //   electionInstance.vote(secretHash, {from:web3.eth.defaultAccount});
-          // }).catch(function(err) {
-          //   console.log(err.message);
-          // });
-          
-          // clear form
-          
+          else {
+            // STATUS CONTROL : must be Registration Approved
+            var status = $('#vstatus').html();
+            if (status != "Registration Approved") {
+              alert("You are not approved to vote in this election yet.");
+            }
+            else if (status == "Registration Approved") {
+              // get selected radio
+              var vote;
+              var ele = document.getElementsByName('voteRadios'); 
+              for(i = 0; i < ele.length; i++) {
+                  if(ele[i].checked) {
+                    vote = ele[i].value;
+                  }
+              }
+              console.log(vote);
+              // get salt input value
+              var salt = document.getElementById('voteSalt').value;
+              console.log(salt);
+              console.log(web3.version);
+              // hash vote and salt
+              var secretHash = web3.utils.soliditySha3(
+                web3.eth.abi.encodeParameters(['bytes32', 'bytes32'], [
+                    web3.utils.asciiToHex(vote), web3.utils.asciiToHex(salt)
+                ]));
+              console.log(secretHash);
+              // App.contracts.Election.deployed().then(function(instance) {
+              //   electionInstance = instance;
+              //   electionInstance.vote(secretHash, {from:web3.eth.defaultAccount});
+              // }).catch(function(err) {
+              //   console.log(err.message);
+              // });
+              
+              // CLEAR FORM
+              document.getElementById('vote-form').reset();
+
+            }
+          }  
         });
 
         $(document).on("click", ".btn-app", function(){
@@ -172,6 +212,18 @@ App = {
 
           // GREY OUT BUTTON OR SHOW APPROVAL
         });
+    },
+
+    getElectionDuration: async function() {
+      var d = new Date();
+      var curr = Math.floor(d.getTime()/ 1000);
+      App.endLeft = Math.max(0, App.endtime - curr);
+    },
+
+    getRevealDuration: async function() {
+      var d = new Date();
+      var curr = Math.floor(d.getTime()/ 1000);
+      App.revLeft = Math.max(0, App.revealtime - curr);
     },
 
     updateStatus: function() {

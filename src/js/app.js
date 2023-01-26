@@ -23,6 +23,7 @@ App = {
     initWeb3: async function() {
     // Modern dapp browsers...
       if (window.ethereum) {
+        console.log("new web3 version");
         App.web3Provider = window.ethereum;
         try {
           // Request account access
@@ -34,10 +35,12 @@ App = {
       }
       // Legacy dapp browsers...
       else if (window.web3) {
+        console.log("legacy version");
         App.web3Provider = window.web3.currentProvider;
       }
       // If no injected web3 instance is detected, fall back to Ganache
       else {
+        console.log("fall back version");
         App.web3Provider = new Web3.providers.HttpProvider('http://localhost:7545');
       }
       web3 = new Web3(App.web3Provider);
@@ -62,16 +65,18 @@ App = {
     /* FUNCTIONS FOR RENDERING UI */
     render: function() {
         var electionInstance;
-
+        console.log(web3.version);
         // Load account data
         web3.eth.getAccounts(function(error, accounts) {
+            console.log("in getaccounts call");
             if (error) {
               console.log(error);
             }
       
-            var account = accounts[0];
+            var account = accounts[0].toLowerCase();
             web3.eth.defaultAccount = account;
             $("#wallet-addr").html(account);
+            console.log("acc set in render" + account);
 
             var vView = $("#electionUI");
             var cView = $("#regUI");
@@ -119,19 +124,53 @@ App = {
           });
         });
 
+        $("#btn-submit-vote").click(async function() {
+          // TIME CONTROL : before election EndTime
+          // STATUS CONTROL : must be Registration Approved
+          // get selected radio
+          var vote;
+          var ele = document.getElementsByName('voteRadios'); 
+          for(i = 0; i < ele.length; i++) {
+              if(ele[i].checked) {
+                vote = ele[i].value;
+              }
+          }
+          console.log(vote);
+          // get salt input value
+          var salt = document.getElementById('voteSalt').value;
+          console.log(salt);
+          console.log(web3.version);
+          // hash vote and salt
+          const secretHash = web3.utils.soliditySha3(
+            web3.eth.abi.encodeParameters(['bytes32', 'bytes32'], [
+                web3.utils.asciiToHex(vote), web3.utils.asciiToHex(salt)
+            ]));
+          console.log(secretHash);
+          // App.contracts.Election.deployed().then(function(instance) {
+          //   electionInstance = instance;
+          //   electionInstance.vote(secretHash, {from:web3.eth.defaultAccount});
+          // }).catch(function(err) {
+          //   console.log(err.message);
+          // });
+          
+          // clear form
+          
+        });
+
         $(document).on("click", ".btn-app", function(){
-          console.log("approve clicked 2");
           // Get corresponding address
           var atts = $(event.target).attr("class").slice(-2);
           var reg_addr = $('[name="voter-addr"][class="'+atts+'"]').html();
           // Call approveRegistration
-
+          console.log("registered addr" + reg_addr);
           App.contracts.Election.deployed().then(function(instance) {
             electionInstance = instance;
-            electionInstance.approveRegistration(reg_addr);
+            electionInstance.approveRegistration(reg_addr, {from:web3.eth.defaultAccount});
           }).catch(function(err) {
             console.log(err.message);
           });
+
+          // GREY OUT BUTTON OR SHOW APPROVAL
         });
     },
 
@@ -153,7 +192,7 @@ App = {
         // statReg = electionInstance.getStatus.call();
       }).then(function() {
         console.log("before getStatus");
-        return electionInstance.getStatus.call();
+        return electionInstance.getStatus.call({from:web3.eth.defaultAccount});
       }).then(function(retReg) {
         console.log(retReg);
         statReg = retReg;

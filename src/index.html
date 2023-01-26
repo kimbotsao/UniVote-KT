@@ -37,34 +37,34 @@
             <p> You may vote once on your preferred candidate for this election. Please note that if your 
               registration has not been approved by the election committee, you will not be able submit your vote.</p>
             <p> Remember to reveal your vote at the end of the election period. </p>
-            <form>
+            <form id="vote-form">
               <div class="form-check">
-                <input type="radio" class="form-check-input" name="voteRadios" id="candidate1" value="option1">
+                <input type="radio" class="form-check-input" name="voteRadios" id="candidate1" value="Roaree Lion" required>
                 <label class="form-check-label" for="candidate1">Roaree Lion</label>
               </div>
               <div class="form-check">
-                <input type="radio" class="form-check-input" name="voteRadios" id="candidate2" value="option2">
+                <input type="radio" class="form-check-input" name="voteRadios" id="candidate2" value="Shih-Fu Chang">
                 <label class="form-check-label" for="candidate2">Shih-Fu Chang</label>
               </div>
               <div class="form-check">
-                <input type="radio" class="form-check-input" name="voteRadios" id="candidate3" value="option3">
+                <input type="radio" class="form-check-input" name="voteRadios" id="candidate3" value="Junfeng Yang">
                 <label class="form-check-label" for="candidate3">Junfeng Yang</label>
               </div>
               <div class="form-check">
-                <input type="radio" class="form-check-input" name="voteRadios" id="candidate4" value="option3">
+                <input type="radio" class="form-check-input" name="voteRadios" id="candidate4" value="Chef Mike">
                 <label class="form-check-label" for="candidate4">Chef Mike</label>
               </div>
               <div class="form-check">
-                <input type="radio" class="form-check-input" name="voteRadios" id="candidate5" value="option3">
+                <input type="radio" class="form-check-input" name="voteRadios" id="candidate5" value="John Jay">
                 <label class="form-check-label" for="candidate5">John Jay</label>
               </div><br/>
               <label for="voteSalt">Salt</label>
-              <input type="text" id="voteSalt" class="form-control" aria-describedby="voteSaltHelp">
+              <input type="text" id="voteSalt" class="form-control" aria-describedby="voteSaltHelp" required>
               <small id="voteSaltHelp" class="form-text text-muted">
                 This salt will be hashed with your vote choice for privacy before being 
                 submitted to the blockchain. Please remember it for the reveal period.
               </small><br/><br/>
-              <button type="submit" class="btn btn-primary" id="btn-submit-vote">Submit</button>
+              <button type="button" class="btn btn-primary" id="btn-submit-vote">Submit</button>
             </form>
           </div>
 
@@ -127,7 +127,8 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
     <!-- Include all compiled plugins (below), or include individual files as needed -->
     <script src="js/bootstrap.min.js"></script>
-    <script src="js/web3.min.js"></script>
+    <!-- <script src="js/web3.min.js"></script> -->
+    <script src="https://cdn.jsdelivr.net/npm/web3@latest/dist/web3.min.js"></script>
     <script src="js/truffle-contract.js"></script>
     <script src="js/app.js"></script>
   </body>

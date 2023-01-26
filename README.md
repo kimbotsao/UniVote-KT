@@ -25,7 +25,8 @@ UniVote is deployed on the TBA. The contract address is TBA. Since we are not ab
 1. Ensure you have cloned the repository, installed Truffle Suite, and Ganache to provide test wallets and ETH.
 2. Set the ```endTime``` and ```revealDuration``` parameter in ```2_deploy_contracts.js```.
 3. Install the Metamask extension and add the Ganache Ethereum client as a new network. Import as many wallet addresses as you would like to use. Please note that Account 1 will be the address of the committee as Truffle will deploy from that address. [Helpful instructions](https://trufflesuite.com/docs/truffle/how-to/truffle-with-metamask/)
-4. Run the following commands to compile, deploy, and start your local web server. 
+4. Add wallet addresses to accounts.json. Make sure the committee address has the idx 0.
+5. Run the following commands to compile, deploy, and start your local web server. 
 ```
 truffle compile
 truffle migrate --reset

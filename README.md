@@ -10,7 +10,7 @@ UniVote is a secure, on-chain voting dApp that works to make voting on small and
 
 &nbsp;&nbsp;&nbsp;Contract address: TBA
 
-**Demo Video link:** TBA
+**Demo Video link:** [UniVote Google Drive Link](https://drive.google.com/file/d/1KE3Ggzx4zq02iNBI63p_HnUIxmiqN_HZ/view?usp=sharing)
 
 ## Testing
 To test, clone the git repository and ensure that Truffle Suite is installed. Note that for tests to execute properly, the ```endTime``` parameter in ```2_deploy_contracts.js``` and ```election_test.js``` must be reconfigured according to current UTC time. Also adjust the millisecond parameter to the ```sleep(ms)``` function in the test file if needed according to execution time on your device.

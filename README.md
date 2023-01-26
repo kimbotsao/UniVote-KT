@@ -4,11 +4,11 @@ Kimberly Tsao (kt2803), Thomas Lim (tl2977)
 
 UniVote is a secure, on-chain voting dApp that works to make voting on small and large scales more accessible and secure. 
 
-**Deployment info:**
+**Deployment info: [Etherscan Link](https://goerli.etherscan.io/address/0xd0fD675BAf8793B7e1AA90aEA069070A78819009)
 
-&nbsp;&nbsp;&nbsp;Test net: TBA
+&nbsp;&nbsp;&nbsp;Test net: Goerli Testnet
 
-&nbsp;&nbsp;&nbsp;Contract address: TBA
+&nbsp;&nbsp;&nbsp;Contract address: 0xd0fD675BAf8793B7e1AA90aEA069070A78819009
 
 **Demo Video link:** [UniVote Google Drive Link](https://drive.google.com/file/d/1KE3Ggzx4zq02iNBI63p_HnUIxmiqN_HZ/view?usp=sharing)
 

@@ -163,7 +163,7 @@ contract Election {
     function calcWinner() public view
             returns (uint256 winner_)
     {
-        require(block.timestamp > revealTime, "Reveal period has not passed");
+        // require(block.timestamp > revealTime, "Reveal period has not passed");
         uint winningVoteCount = 0;
         for (uint c = 0; c < candidates.length; c++) {
             if (candidates[c].voteCount > winningVoteCount) {

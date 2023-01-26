@@ -1,25 +1,21 @@
 [
     {
         "address": "0x07Dce7e6B141cEDf8816dF0C22Adf4b7A83f8b8A",
-        "pkey": "abcde",
         "role": "commission",
         "idx": 0
     },
     {
         "address": "0x6d8008F2ADf555071EB41c3aC2c23E23990cc428",
-        "pkey": "abcde",
         "role": "voter",
         "idx": 1
     },
     {
         "address": "0x613b1ce1a515fd9793a0F03A40C7DF3605ca3901",
-        "pkey": "abcde",
         "role": "voter",
         "idx": 2
     },
     {
         "address": "0xcd59FDD3Eb2B7d6Da236bB0fb0A354e3fB377AF4",
-        "pkey": "abcde",
         "role": "voter",
         "idx": 3
     }

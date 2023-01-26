@@ -175,6 +175,7 @@ App = {
               console.log(vote);
               // get salt input value
               var salt = document.getElementById('voteSalt').value;
+              console.log("submit vote");
               console.log(salt);
               console.log(web3.version);
               // hash vote and salt
@@ -207,21 +208,47 @@ App = {
             alert("The reveal period has ended.")
           }
           else {
+            var revote = document.getElementById('voteRev').value;
+            console.log("reveal vote");
+            console.log(revote);
+            var salt = document.getElementById('revSalt').value;
+            console.log(salt);
+
+            App.contracts.Election.deployed().then(function(instance) {
+              electionInstance = instance;
+              electionInstance.revealVote(web3.utils.asciiToHex(revote), web3.utils.asciiToHex(salt), {from:web3.eth.defaultAccount});
+            }).catch(function(err) {
+              console.log(err.message);
+            });
+
             document.getElementById('rev-form').reset();
           }
+        });
 
-
-          App.contracts.Election.deployed().then(function(instance) {
-            electionInstance = instance;
-            // electionInstance.registerVoter({from: $("#wallet-addr").val()});
-            electionInstance.registerVoter({from:web3.eth.defaultAccount});
-            // return electionInstance.getEndTime.call();
-          }).then(function() {
-              console.log("register called");
-              App.updateStatus();
-          }).catch(function(err) {
+        $("#btn-results").click(async function() {
+          await App.getRevealDuration();
+          if (App.revLeft != 0){
+            alert("The election and reveal period has not ended.");
+          }
+          else if (App.revLeft == 0){
+            console.log("calling for winner");
+            console.log(App.revealtime);
+            App.contracts.Election.deployed().then(function(instance) {
+              electionInstance = instance;
+              return electionInstance.getName.call({from:web3.eth.defaultAccount});
+            }).then(function(winner) {
+              console.log("WINNERRRRRR");
+              var winnername = web3.utils.hexToAscii(winner);
+              console.log(winnername);
+              var winner_html = '';
+              winner_html += '<strong>Election Winner</strong>: <span>';
+              winner_html += winnername;
+              winner_html += '</span>';
+              $( "#resultUI" ).append(  winner_html );
+            }).catch(function(err) {
               console.log(err.message);
-          });
+            });
+          }
         });
 
         $(document).on("click", ".btn-app", function(){

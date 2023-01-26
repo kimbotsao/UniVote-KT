@@ -17,6 +17,8 @@
   },
   "dependencies": {
     "@truffle/contract": "^4.6.12",
+    "@truffle/hdwallet-provider": "^2.1.5",
+    "dotenv": "^16.0.3",
     "web3": "^1.8.1"
   }
 }
